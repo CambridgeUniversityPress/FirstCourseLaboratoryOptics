@@ -12,7 +12,7 @@
 % SYNTAX:  I = imdespeckle(imagefile, threshold);
 %
 % NOTES: - threshold = 1 is usually a good starting point.
-%        - The image is assumed to be a monochrome image. If it is not, then it is converted
+%        - The image is assumed to be a monochrome image. ?If it's not, it's converted
 %          to a monochrom image. 
 %
 % INPUT ARGUMENTS
@@ -23,17 +23,15 @@
 
 function despekld_image =imdespeckle(imagefile, threshold)
 
-% The following lines read in the figure data, convert the color image to intensity and 
-% convert the uint8 data type of the figure to the double (real numbers) data type used 
-% for computation.
-data = imread(imagefile);
-if size(data,3)>1, data=rgb2gray(data); end
-data = double(data);
+data = imread(imagefile);       % read the image into the array "data"
+data = mean(data,3);            % could also use rgb2gray(data) to preserve luminance
+data = double(data);            % convert data to double precision for math operations
 
 % Perform the 2D numerical fourier transform and scale it correctly. The result is a
 % picture of the image in "frequency space" (spatial frequency, that is).
-N1 = size(data,1); N2=size(data,2);
-F = fftshift(fft2(data)/sqrt(N1*N2));
+N1 = size(data,1);                                  % number of rows
+N2 = size(data,2);                                  % number of columns
+F = fftshift(fft2(data)/sqrt(N1*N2));               % 2D FT with zero freq. in center of image
 
 % Threshold the fourier transformed image
 pixels_below_threshold = log10(abs(F))<threshold;   % logical mask for pixels -> 0
@@ -67,4 +65,4 @@ set(gca,'color',[1 1 1]*0.3,'plotboxaspectratio',[N2/N1,1,1],...
 axis square; 
 axis(axlims); 
 colorbar;
-title('2D FFT, Thresholded & Smoothed','fontsize',9,'fontname','fixedwidth');
+title('Log10 of the 2D FFT, Thresholded','fontsize',9,'fontname','fixedwidth');

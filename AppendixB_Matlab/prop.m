@@ -29,4 +29,4 @@ n=mode(1);
 m=mode(2);
 
 q = (A*q1 + B)./(C*q1 + D);
-p = p1.*exp(i*angle(1./(A+B./q1).^(1+n+m)));
+p = p1.*exp(1i*angle(1./(A+B./q1).^(1+n+m)));

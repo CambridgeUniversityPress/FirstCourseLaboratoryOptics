@@ -7,17 +7,10 @@
 % the cut intensities is smoothed to reduce laser speckle and displayed.
 % -------------------------------------------------------------------------------------------
 
-% ----------------------------------------------------------
-% Read in the image and convert it to grayscale if necessary
-% ----------------------------------------------------------
-
 imagefile = 'myphoto.jpg';         	% User specified path to image file
 A=imread(imagefile);               	% image is read in as an array A
-A=double(A)/255;                 	% doubles needed for most purposes, also normalize
-
-if length(size(A))==3             	% Color array has three pages (for R, G, & B  resp.)
-    A = sum(A,3)/3;               	% sum over pages (3rd array dim.) & renormalize.
-end
+A=double(A)/255;                 	% doubles needed for most purposes. Also normalize.
+A=mean(A,3);                        % color array has three pages (R,G,B) so average->greyscale
 
 col = round(size(A,2)/2);          	% the column index corresponding to the image center
 cut = A(:,col);                     % this is how the cut is actually taken

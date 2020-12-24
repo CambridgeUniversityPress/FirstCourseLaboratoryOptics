@@ -19,8 +19,10 @@ lambda = 633e-9;                                    % optical wavelength in m
 % -------------
 % Source plane
 % -------------
-xpmax=0.002; ymax=xpmax;                            % Src plane area: 4*xmax*ymax m^2
-Nx = 2^nextpow2(512); Ny = 2^nextpow2(Nx);          % #pts in source plane grid = Nx*Ny
+xpmax=0.002;                                        % Src plane area: 4*xmax*ymax m^2
+ymax=xpmax;                                         
+Nx = 2^nextpow2(512);                               % #pts in source plane grid = Nx*Ny
+Ny = 2^nextpow2(512);                               % (nextpow2... gives next power of two for speed)
 dxp = 2*xpmax/(Nx-1);  dyp=2*ymax/(Ny-1);           % interpixel dist. in the src plane (m)
 xp  = repmat( ((0:Nx-1)-floor(Nx/2))  *dxp, Ny,1);  % x' values at which to calc. source field
 yp  = repmat( ((0:Ny-1)-floor(Ny/2)).'*dyp, 1,Nx);  % y' values at which to calc. source field
@@ -48,7 +50,7 @@ AA = M(1,1); BB = M(1,2); CC = M(2,1); DD = M(2,2);     % The components A, B, C
 % aperture = (xp+0.75*b).^2+(yp-0.35*b).^2 > (a/2)^2; % circular obstruction logical mask
 
 a = 3000*1e-6;                                      % equil.triang. aperture side (m)
-aperture = ~((yp<sqrt(3)*xp+a/2/sqrt(3)) &...
+aperture = ((yp<sqrt(3)*xp+a/2/sqrt(3)) &...
             (yp<-sqrt(3)*xp+a/2/sqrt(3)) &...
             (yp>-a/2/sqrt(3)));                     % equil. triangular aperture
 
@@ -56,7 +58,7 @@ aperture = ~((yp<sqrt(3)*xp+a/2/sqrt(3)) &...
 % b = 600e-6;
 % aperture = ~(((yp-0.35*b)<sqrt(3)*(xp+0.75*b)+a/2/sqrt(3)) &...
 %             ((yp-0.35*b)<-sqrt(3)*(xp+0.75*b)+a/2/sqrt(3)) &...
-%             ((yp-0.35*b)>-a/2/sqrt(3)));           % equil. triangular obstructin
+%             ((yp-0.35*b)>-a/2/sqrt(3)));           % equil. triangular obstruction
 
 % -------------
 % Source Field 
@@ -65,7 +67,7 @@ aperture = ~((yp<sqrt(3)*xp+a/2/sqrt(3)) &...
 % and radius of curvature "roc". The beam is clipped by the apeture.
 roc = 0.5;                                          % R.O.C. of phasefront at src plane (m)
 w  = 750e-6;                                        % beam width of incident beam (m) 
-I0 = 1e6;                                           % max src plane intensity (W/m^2)
+I0 = 7617.5;                                        % max src plane intensity (W/m^2)
 E0 = sqrt(2*I0/c/epsilon0);                         % m ax field ampl. in src plane (N/C)
 k=2*pi/lambda;                                      % wave number
 r=sqrt(xp.^2+yp.^2);                                % src plane coordss dist from center
@@ -114,11 +116,6 @@ outpow = trapz(trapz(Ifield))*dx*dy;				% (total power) should equal field plane
 disp(['Power in the source plane:   Pin  =  ',num2str(inpow*1000),' mW']);
 disp(['Power in the field plane:   Pout  =  ',num2str(outpow*1000),' mW']);
 
-% Make a red colormap for use in displaying the laser beam intesity
-% -----------------------------------------------------------------
-cb=sqrt(colormap('bone'));                          % modify the built-in 'bone' colormap
-cmred=[cb(:,2)*1, cb(:,2)*0.2, cb(:,2)*0.1];        % make it shades of red rather than grey
-
 % Display source plane intensity (Fig. 1)
 % ---------------------------------------
 figure(1);                                          % open a figure window
@@ -131,13 +128,13 @@ axis tight                                          % minimize white space
 set(ax1,'linestyle','none');                        % don't draw the axes
 caxis([min([max(Isource(aperture)),...              % set the color axis
     min(Isource(aperture))]),max(Isource(aperture))]/1000); 
-colormap(cmred); 									% activate the color map
+colormap(copper); 									% activate the color map
 shading interp;										% looks more realistic
 grid off;
 cbar1=colorbar;
 ylabel(cbar1,'Intensity (mW/mm^2)');
 hold off;
-title('Source Plane Intensity');
+title('Source Plane Irradiance');
 set(gca,'fontsize',14);
 
 % Display field plane intensity (Fig. 2)
@@ -153,8 +150,8 @@ axis square
 axis tight                                          
 set(ax2,'linestyle','none');
 caxis(([min(min(Ifield)) (max(max(Ifield)))/1000]));
-title('Diffracted Intensity in the Field Plane');
-colormap(cmred); 
+title('Diffracted Irradiance in the Field Plane');
+colormap(copper); 
 cbar2=colorbar;
-ylabel(cbar2,'Intensity (mW/mm^2)');
+ylabel(cbar2,'?Irradiance  (mW/mm^2)');
 set(gca,'fontsize',14);
