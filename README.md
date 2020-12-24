@@ -14,7 +14,7 @@ ___
 ## Target Audience
 
 - Third and fourth year undergraduates
-- Early graduate students
+- Graduate students
 - Professionals moving into areas of applied optics
 
 ## Abstract
