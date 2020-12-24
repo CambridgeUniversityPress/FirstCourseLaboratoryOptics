@@ -23,7 +23,7 @@ lam = 633e-9                                        # optical wavelength in m
 # -------------
 # Source plane
 # -------------
-xmax=0.002                                         # Src plane area: 4*xmax*ymax m^2
+xmax=0.002                                          # Src plane area: 4*xmax*ymax m^2
 ymax=xmax                                          
 Nx = int(2**np.ceil(np.log2(np.abs(512))))          # number of pixels in source plane grid is Nx*Ny
 Ny = int(2**np.ceil(np.log2(np.abs(512))))          # (2**... etc gives next power of two for speed)
@@ -111,7 +111,7 @@ x = X*h;  y = Y*h;                                  # Field plane, x and y-domai
 ufield = \
     -1j*np.exp(1j*np.pi*DD/BB/lam*((x)**2+(y)**2)) \
     *np.fft.fftshift(np.fft.fft2(np.exp(1j*np.pi*AA*(Xp**2+Yp**2))*usource )*dXp*dYp ) # FT2
-Ifield = epsilon0*c/2*np.abs(ufield)**2;               # get the intensity
+Ifield = epsilon0*c/2*np.abs(ufield)**2;            # get the intensity
 
 # ========================================================================================
 # |+|+|+|+| CODE BELOW CHECKS AND DISPLAYS THE RESULTS |+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|
@@ -119,8 +119,8 @@ Ifield = epsilon0*c/2*np.abs(ufield)**2;               # get the intensity
 
 # Check energy conservation
 # -------------------------
-inpow =  np.trapz(np.trapz(Isource))*dxp*dxp;				# integral of intensity in the src plane 
-outpow = np.trapz(np.trapz(Ifield))*dx*dy;				# (total power) should equal field plane
+inpow =  np.trapz(np.trapz(Isource))*dxp*dxp;		# integral of intensity in the src plane 
+outpow = np.trapz(np.trapz(Ifield))*dx*dy;			# (total power) should equal field plane
 print('Power in the source plane:   Pin  =  '+"%8.4f" % ( inpow*1000)+' mW');
 print('Power in the field plane:   Pout  =  '+"%8.4f" % (outpow*1000)+' mW');
 
