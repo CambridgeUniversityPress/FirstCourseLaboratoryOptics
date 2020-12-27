@@ -2,13 +2,6 @@ ___
 This repository contains material to accompany the textbook "A First Course in Laboratory Optics" by A.M. Gretarsson. The easiest way to download it is to press the green button marked "⤓ Code ▾" on the [main page](https://github.com/CambridgeUniversityPress/FirstCourseLaboratoryOptics.git "A First Course in Laboratory Optics") and select "Download ZIP".
 ___
 [![A Gaussian beam approaches a waist](https://github.com/CambridgeUniversityPress/FirstCourseLaboratoryOptics/blob/master/Figures/Cover/FCLO_Cover_wide.jpg?raw=true)](https://github.com/CambridgeUniversityPress/FirstCourseLaboratoryOptics "A First Course in Laboratory Optics") 
-
-# A First Course in Laboratory Optics
-
-**Author:** Andri M. Gretarsson
-
-**ISBN:** 978-1108488853
-
 **Buy:** [Cambridge University Press](https://www.cambridge.org/core/books/first-course-in-laboratory-optics/3C6018F72383172D1E487F5D35F37E47#) | [Amazon](https://www.amazon.com/First-Course-Laboratory-Optics/dp/1108488854) 
 
 ## Target Audience
