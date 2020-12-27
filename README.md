@@ -9,7 +9,7 @@ ___
 
 **ISBN:** 978-1108488853
 
-**Buy:** [Cambridge University Press](https://www.cambridge.org/core/books/first-course-in-laboratory-optics/3C6018F72383172D1E487F5D35F37E47#) | [Amazon](https://www.amazon.com/First-Course-Laboratory-Optics/dp/1108488854)
+**Buy:** [Cambridge University Press](https://www.cambridge.org/core/books/first-course-in-laboratory-optics/3C6018F72383172D1E487F5D35F37E47#) | [Amazon](https://www.amazon.com/First-Course-Laboratory-Optics/dp/1108488854) 
 
 ## Target Audience
 
