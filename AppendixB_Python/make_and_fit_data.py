@@ -4,8 +4,8 @@
 # -------------------------------------------------------------------------------------------
 # This script makes some simulated data for the intensity at the output of a michelson as a 
 # function of mirror position with added noise.  It then fits the data to a straight line
-# using one of Matlab's built-in curve-fitting tools: lsqnonlin. It handles non-uniform
-# uncertainties correctly and propagates the data uncertainties into the best fit parameters.
+# using built-in curve-fitting tools. It handles non-uniform uncertainties correctly and 
+# propagates the data uncertainties into the best fit parameters.
 # -------------------------------------------------------------------------------------------
 
 import numpy as np
