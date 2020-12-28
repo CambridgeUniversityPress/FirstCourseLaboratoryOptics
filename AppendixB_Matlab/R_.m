@@ -24,3 +24,4 @@ if nargin>=2, lam=varargin{1}; else lam=1064e-9; end
 
 w=sqrt(lam/pi .* imag(q).*(1+real(q).^2./imag(q).^2));
 R=real(q).*(1+imag(q).^2./real(q).^2).*ones(size(w));
+R(real(q)==0)=inf;  % for the case where the beam is at a waist 

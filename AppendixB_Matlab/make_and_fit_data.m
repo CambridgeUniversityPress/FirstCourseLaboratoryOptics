@@ -23,6 +23,20 @@ sigma_y = 0.025;                            % The std of y values (the actual un
 y = y + sigma_y*randn(size(y));             % Add the fluctuations due to the uncertainty
 yerr =  abs(y)*0.02;                        % 2% uncertainty estimate made by the observer
 
+d=[
+   -5.0419    0.4463    0.0089
+   -3.6250    0.4798    0.0096
+   -2.4634    0.4917    0.0098
+   -1.4560    0.4921    0.0098
+    0.1898    0.5638    0.0113
+    1.3114    0.5110    0.0102
+    2.5270    0.5328    0.0107
+    3.8530    0.5403    0.0108
+    5.0523    0.5406    0.0108
+    ];
+x = d(:,1);
+y = d(:,2);
+yerr = d(:,3);
 
 %-----------------------------------------------------------------
 % Display the data
@@ -35,7 +49,7 @@ figure(1);                                  % Open a figure in which to plot
 h=errorbar(x,y,yerr,'d');                   % Plot the data with the unc. estimates
 set(h,'linewidth',1.5);                     % Make the plot lines a bit thicker
 set(gca,'xlim',[-10 10]);                   % Choose the x axis limits of the plot
-set(gca,'ylim',[0.4 0.65]);                  % Choose the y axis limits of the plot]
+set(gca,'ylim',[0.4 0.65]);                 % Choose the y axis limits of the plot]
 xticks(-10:2:10);                           % Make the x axis have ticks on the even integers
 grid on;                                    % draw the grid
 set(gca,'fontsize',14);                     % Bigger default font for this plot
@@ -49,31 +63,32 @@ hold on;                                    % Allow the next plot to share the s
 % Fit the data to "fitfunc"                 % see end of script for functions
 %-----------------------------------------------------------------
 
-a0 = [0;1];                                 % your initial guess at the best fit values
+a0 = [0;1];                                 % Your initial guess at the best fit values.
 [a,~,res,~,~,~,jac] = ...                   % "a" are the best fit values, res and jac 
-    lsqnonlin(...                           % are used to find the uncertainty in a(1), a(2), ...
-        @(a)weighted_residuals(a,@fitfunc,x,y,yerr),... % this "anonymous function" is minimized
-        a0...                               % Note: @(a)weigh... defines the anonymous function of a
-        );                                  % = weighted_residual for the x,y,yerr data given
-xfit = linspace(-8,8,100);                  % x values for plotting the fit function
-plot(xfit,fitfunc(a,xfit),'--',...          % Plot the fit using the same function to
-    'linewidth',2);                         % Generate the y-values as was used in the fit
-hold off;                                   % Allow the next plot to wipe the current one
-legend('Data','Best fit line',...           % Put a legend in the lower right corner
-    'location','southeast');                % (a.k.a the "southeast" corner)
-title('Data and fit');
+    lsqnonlin(...                           % are used to find the uncertainty in a(1),a(2),... 
+        @(a)weighted_residuals(a,@fitfunc,x,y,yerr),... % This "anonymous function" is minimized.
+        a0...                               % Note: @(a)weigh... defines the anonymous function for
+        );                                  % the weighted_residual with the (x,y,yerr) data given.
+xfit = linspace(-8,8,100);                  % The x values for plotting the fit function.
+plot(xfit,fitfunc(a,xfit),'--',...          % Plot the best fit (i.e.n use the best-fit function to
+    'linewidth',2);                         % generate the y-values of the plot).
+hold off;                                   % Allow the next plot to clear the current one.
+legend('Data','Best fit line',...           % Put a legend in the lower right corner,
+    'location','southeast');                % a.k.a the "southeast" corner.
+title('Data and Fit');
+residual = y-fitfunc(a,x);                  % residual is data minus the fit
 X2red = 1/(length(x)-length(a))*sum(...     % The reduced chi-squared of the best fit...
-    (y-fitfunc(a,x)).^2./yerr.^2);          % should be close to 1.
+    (residual).^2./yerr.^2);                % should be close to 1.
 disp(['X2red = ',num2str(X2red)]);          % In the Matlab command window
 
 
 %-----------------------------------------------------------------
-% Direct estimate of the uncertainties from X2 curvature
+% Direct estimate of the parameter uncertainties
 %-----------------------------------------------------------------
 J=zeros(length(a),1); da=zeros(length(a),1); % Set up the variables
 for r=1:length(a)                           
     Jsqr(r)=sum( (jac(:,r)).^2 );           % curvature of the a_r chi-square cut at the minimum
-    da(r) = 1/sqrt(Jsqr(r));                % is approx C_r =  2*sum(jac(:,r).^2. Gives parabola.
+    da(r)= 1/sqrt(Jsqr(r));                 % is approx C_r =  2*sum(jac(:,r).^2. Gives parabola.
 end
 disp('Solution +/- uncertaintes:')          
 disp([a,da]);                               % display best-fit values and uncertainties 
@@ -106,7 +121,7 @@ grid on;                                                % draw a grid on the plo
 xlabel('a_1','fontname','Times New Roman','fontangle','italic');    % x-axis label
 ylabel('\chi^2');                                       % y-axis label
 set(gca,'fontsize',16);                                 % make the font size bigger
-title('\chi^2 cuts');                                   % add a title to the graph
+title('\chi^2 Cuts');                                   % add a title to the graph
 subplot(2,1,2);                                         % set up the second plot window
 h=plot(a_2,X2_a2cut,'-',a(2),min(X2_a2cut),'o',...      % plot X^2 cut in the a_2 dir, the min, ..
     [min(a_2),max(a_2)],[min(X2_a2cut),min(X2_a2cut)]+1,'--'); % and min+1 line
@@ -144,13 +159,13 @@ caxis(min(min(X2))+[0,100])                 % Set the color range
 cbar=colorbar;                              % Color key
 set(gca,'fontsize',16);                     % Bigger fonts are more visible
 ylabel(cbar,'   \chi^2','rotation',0,'fontsize',16); % y-axis text label
-daspect([1,1,1]);                           % Make the axes equally spaced
+axis equal                                  % Make the axes to scale
 hold on;
 contour(a1,a2,X2,min(min(X2))+[1,1],'w:','linewidth',2); % 1 contour at min(X2) + 1
 plot(a(1),a(2),'w.');                       % Best fit values of a1 and a2
 xlabel('a_1','fontname','Times New Roman','fontangle','italic');
 ylabel('a_2','fontname','Times New Roman','fontangle','italic');
-title('\chi^2 surface');
+title('\chi^2 Surface');
 hold off
 
 
@@ -174,4 +189,9 @@ end
 function C = ChiSqr(a,fhandle,x,y,yerr) 
 wr = weighted_residuals(a,fhandle,x,y,yerr);% chisqr is just the quadrature sum of ...
 C = sum(wr.^2);                             % the weighted residuals 
+end
+
+% Function for to calculate the root mean square of a vector
+function result=rmss(v)
+result = sqrt( mean( (v).^2 ) );
 end

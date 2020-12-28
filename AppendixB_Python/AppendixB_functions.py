@@ -9,10 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def beamradius(params,z):
-    """ Returns the field radius of a TEM_00 mode beam at any point z 
-    along the optic axis. Fit parameters are beam width. The input
-    arguments w0, zw, lam, z all need to be in the same units.
-    The output arguments will be in those units.
+    """Returns the field radius of a TEM_00 mode beam at any point z 
+    along the optic axis. 
     
     SYNTAX: w,R,zR = beamradius([w0,zw,lam],z);
     
@@ -22,20 +20,23 @@ def beamradius(params,z):
     
     w  = spot size (field radius) at z
     R  = curvature of phasefront at z
-    zR = Raleigh length."""
+    zR = Raleigh length.
     
-    w0=params[0]                        # beam (field) width at waist [meters]
-    zw=params[1]                        # waist position [meters]
+    The input arguments w0, zw, lam, z all need to be in the same 
+    units. The output arguments will be in those units."""
+    
+    w0=params[0]                        # beam width at waist [e.g. meters]
+    zw=params[1]                        # waist position [e.g. meters]
     lam = params[2]                     # wavelength [meters]
     
-    zR=np.pi*w0**2/lam                  # Raleigh length [meters]
-    w=w0*np.sqrt(1+((z-zw)/zR)**2)      # beam width at z [meters]
+    zR=np.pi*w0**2/lam                  # Raleigh length [e.g. meters]
+    w=w0*np.sqrt(1+((z-zw)/zR)**2)      # beam width at z [e.g. meters]
     R=z*(1+(zR/z)**2)                   # beam phasefront curvature at z
 
-    return  w,R,zR
+    return  w,R,zR                      # values at pos z [e.g. meters]
 
 def prop(q1,abcd,mode=[0,0],p1=1):
-    """ Propagates a Gaussian beam (TEM_nm) with complex radius of 
+    """Propagates a Gaussian beam (TEM_nm) with complex radius of 
     curvature q1 and amplitude factor p1 (optional), using the abcd 
     matrix supplied.
     
@@ -68,16 +69,13 @@ def q_(w,R,lam=1064.0e-9):
     SYNTAX: q=q_(w,R <,lam>);
                     <...> indicates optional arguments
 
-    w      = 1/e Field radius 
-    R      = Radius of curvature of phasefront
+    w     = 1/e Field radius 
+    R     = Radius of curvature of phasefront
     lam   = wavelength 
 
-    Any one of w, R and lambda may be a vectors or scalars.
-    If more than one of w, R and lambda is a vector, all 
-    vectors supplied must be the same size. w, R and lambda must
-    all be in the same units."""
+    w, R and lam must all be in the same units."""
 
-    if R!=np.Inf:
+    if R!=np.inf:
         q=np.pi*w**2*R/(np.pi*w**2-1j*R*lam)
     else:
         q=1j*np.pi*w**2/lam
@@ -87,23 +85,24 @@ def q_(w,R,lam=1064.0e-9):
 def R_(q,lam=1064.0e-9):
     """﻿Returns the phasefront radius of curvature, R, and the beam 
     width, w, of a Gaussian beam. Accepts the complex beam radius,
-    q, and the wavelength
+    q, and the wavelength. 
 
     SYNTAX: R,w=R_(q <,lambda>);   
                 <...> indicates optional arguments
 
     q       = q-factor of the beam at the position where R and w are to
-             be found. q can be a vector
-    lambda  = wavelength. Can be a vector or scalar.
+              be found. q can be a vector
+    lam     = wavelength. Can be a vector or scalar.
     w       = beam radius
-    R       = beam phasefront curvature
+    R       = beam phasefront curvature"""
     
-    If both q and lambda are vectors, they must be the same size.
-    If w is requested as an output, lambda should be supplied."""
-
-    w=np.sqrt(lam/np.pi * np.imag(q)*(1+np.real(q)**2/np.imag(q)**2))
-    R=np.real(q)*(1+np.imag(q)**2/np.real(q))*np.ones(np.shape(w))
-    
+    if np.real(q)!=0: # provided q isn't purely imaginary, use usual formulas
+        w = np.sqrt(lam/np.pi * np.imag(q)*(1+np.real(q)**2/np.imag(q)**2))
+        R=np.real(q)*(1+np.imag(q)**2/np.real(q)**2)*np.ones(np.shape(w))
+    else:             # if q is purely imaginary, R will be infinite
+        w = np.sqrt(lam/np.pi * np.imag(q)*(1+np.real(q)**2/np.imag(q)**2))
+        R = np.inf
+        
     return R,w
     
 def imdespeckle(imagefile, threshold):
@@ -117,7 +116,7 @@ def imdespeckle(imagefile, threshold):
 
     NOTES: - threshold = 1 is usually a good starting point.
            - The image is assumed to be a monochrome image. If it's not, it's converted
-             to a monochrom image. 
+             to a monochrome image before processing. 
            
     INPUT ARGUMENTS
     ---------------
