@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------------
 # DATA FITTING DEMONSTRATION 
-# Language: Matlab (see Line 158 for modifications needed to run under Octave)
+# Language: Python 3
 # -------------------------------------------------------------------------------------------
 # This script makes some simulated data for the intensity at the output of a michelson as a 
 # function of mirror position with added noise.  It then fits the data to a straight line
