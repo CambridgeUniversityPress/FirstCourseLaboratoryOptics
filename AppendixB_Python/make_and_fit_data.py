@@ -18,14 +18,14 @@ from scipy.optimize import curve_fit
 
 # This function is to be fit to the data
 def fitfunc(x,a1,a2):
-    y=a1+a2*x;                              # straight line (can be changed to anything)
+    y=a1+a2*x                               # straight line (can be changed to anything)
     return y
 
 
 # Convenience function for calculating the chi-square
 def ChiSqr(a,fitfunc,x,y,yerr):
     wr=(fitfunc(x,a[0],a[1])-y)/yerr        # chisqr is just the quadrature sum of ...
-    C = sum(wr**2);                         # the weighted residuals 
+    C = sum(wr**2)                          # the weighted residuals 
     return C
 
 #-----------------------------------------------------------------
@@ -128,12 +128,12 @@ plt.show()
 #-----------------------------------------------------------------
 
 # Set up the domain. a1 and a2 are matrixes of parameter values at which to calculate chi-squared
-a1,a2 = np.meshgrid(np.linspace(0.47,0.55,100),np.linspace(-0.01,0.03,100));
+a1,a2 = np.meshgrid(np.linspace(0.47,0.55,100),np.linspace(-0.01,0.03,100)) 
 
-X2 = np.zeros(np.shape(a1));     # This is the surface we will be finding
+X2 = np.zeros(np.shape(a1))      # This is the surface we will be finding
 for k in range(np.shape(a1)[0]):                     # step through all the values of a1 and a2
     for s in range(np.shape(a2)[1]):                 # in the desired range
-        X2[k,s] = ChiSqr([a1[k,s],a2[k,s]],fitfunc,x,y,yerr); # Uses ChiSqr function def. above
+        X2[k,s] = ChiSqr([a1[k,s],a2[k,s]],fitfunc,x,y,yerr) # Uses ChiSqr function def. above
 
 
 fig3 = plt.figure(3)                                # open figure 2
