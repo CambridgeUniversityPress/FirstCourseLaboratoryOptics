@@ -47,15 +47,15 @@ yerr =  np.abs(y)*0.02                      # 2% uncertainty estimate made by th
 # Display the data
 #-----------------------------------------------------------------
 
-plt.figure(1);                              # Open a figure in which to plot
+plt.figure(1)                               # Open a figure in which to plot
 plt.clf()                                   # Remove any previous plots
 plt.errorbar(x,y,yerr,fmt='none',\
-             ecolor=[0.2,0.4,0.8],capsize=3); # Plot the data with the unc. estimates
+             ecolor=[0.2,0.4,0.8],capsize=3)  # Plot the data with the unc. estimates
 plt.plot(x,y,'o',mfc='none',color=[0.2,0.4,0.8])
-plt.xlabel('Mirror motion (nm)');           # Label the x axis
+plt.xlabel('Mirror motion (nm)')            # Label the x axis
 plt.ylabel('$P_\mathrm{out} / P_\mathrm{one~arm}$'); # Label the y axis
-plt.xlim([-10,10]);                         # Choose the x axis limits of the plot
-plt.ylim([0.4,0.65]);                       # Choose the y axis limits of the plot]
+plt.xlim([-10,10])                          # Choose the x axis limits of the plot
+plt.ylim([0.4,0.65])                        # Choose the y axis limits of the plot]
 plt.grid(True)                              # Show grid lines
 plt.show()
 
@@ -63,16 +63,16 @@ plt.show()
 #-----------------------------------------------------------------
 # Fit the data to "fitfunc"                 # see end of script for functions
 #-----------------------------------------------------------------
-a0 = np.array([0,1]);                       # Initial guess at the best fit values.
+a0 = np.array([0,1])                        # Initial guess at the best fit values.
 a,acov = curve_fit(fitfunc,x,y,p0=a0,sigma=yerr,absolute_sigma=True)   # fit the data
-xfit = np.linspace(-8,8,100);
+xfit = np.linspace(-8,8,100)
 plt.plot(xfit,fitfunc(xfit,a[0],a[1]),'r--')
 plt.title('Data and Fit')
-residual = y-fitfunc(x,a[0],a[1]);          # Residual is data minus the fit
+residual = y-fitfunc(x,a[0],a[1])           # Residual is data minus the fit
 X2red = 1/(np.shape(x)[0]-np.shape(a)[0])\
-    *np.sum((residual)**2./yerr**2);        # Reduced chi-squared ~ 1 if fit is good.
+    *np.sum((residual)**2./yerr**2)         # Reduced chi-squared ~ 1 if fit is good.
 print('')
-print('X2red = '+"%0.2f"%X2red);            # Show reduced chisquare in the console
+print('X2red = '+"%0.2f"%X2red)             # Show reduced chisquare in the console
 
 #-----------------------------------------------------------------
 # Direct estimate of the parameter uncertainties
@@ -81,7 +81,7 @@ aerr = np.sqrt(np.diag(acov))      # uncertainties in the parameters
 print('')
 print('Solution:')
 for s in range(len(a)):
-    print("%0.4f"%a[s]+' +/- '+"%0.4f"%aerr[s]); # Show best fit values and unc. in console
+    print("%0.4f"%a[s]+' +/- '+"%0.4f"%aerr[s]) # Show best fit values and unc. in console
 
 #-----------------------------------------------------------------
 # OPTIONAL:
@@ -90,23 +90,23 @@ for s in range(len(a)):
 # draw the line corresponding to chi-square increasing by 1.
 #-----------------------------------------------------------------
 
-a_1 = np.linspace(0.4,0.6,200);             # The domain of a_1-axis chi-square cut
+a_1 = np.linspace(0.4,0.6,200)              # The domain of a_1-axis chi-square cut
 a_2 = np.linspace(0.005,0.015,200)          # The domain of a_2-axis chi-square cut
-X2_a1cut = np.zeros(len(a_1));              # will hold the y-values of the a_1 cut
-X2_a2cut = np.zeros(len(a_2));              # will hold the y-values of the a_2 cut
+X2_a1cut = np.zeros(len(a_1))               # will hold the y-values of the a_1 cut
+X2_a2cut = np.zeros(len(a_2))               # will hold the y-values of the a_2 cut
 for s in range(len(a_1)):
-    X2_a1cut[s] = ChiSqr([a_1[s],a[1]],fitfunc,x,y,yerr); # the a_1 cut chi-square values 
+    X2_a1cut[s] = ChiSqr([a_1[s],a[1]],fitfunc,x,y,yerr) # the a_1 cut chi-square values 
 for s in range(len(a_1)):
-    X2_a2cut[s] = ChiSqr([a[0],a_2[s]],fitfunc,x,y,yerr); # the a_2 cut chi-square values
+    X2_a2cut[s] = ChiSqr([a[0],a_2[s]],fitfunc,x,y,yerr) # the a_2 cut chi-square values
 
-plt.figure(2);                              # Open a figure in which to plot
+plt.figure(2)                               # Open a figure in which to plot
 plt.clf()                                   # Remove any previous plots
 plt.subplot(2,1,1)
 plt.plot(a_1,X2_a1cut,'-',a[0],np.min(X2_a1cut),'o',\
     np.array([np.min(a_1),np.max(a_1)]),\
     np.array([np.min(X2_a1cut),np.min(X2_a1cut)])+1,'--') # plot X^2 cut in the a_1 dir, the min, and min+1 line
-plt.xlabel('$a_1$');           # Label the x axis
-plt.ylabel('$\chi^2$'); # Label the y axis
+plt.xlabel('$a_1$')                         # Label the x axis
+plt.ylabel('$\chi^2$')                      # Label the y axis
 plt.title('$\chi^2$ Cuts')
 plt.grid(True)                              # Show grid lines
 plt.show()
@@ -115,8 +115,8 @@ plt.subplot(2,1,2)
 plt.plot(a_2,X2_a2cut,'-',a[1],np.min(X2_a2cut),'o',\
     np.array([np.min(a_2),np.max(a_2)]),\
     np.array([np.min(X2_a2cut),np.min(X2_a2cut)])+1,'--') # plot X^2 cut in the a_1 dir, the min, and min+1 line
-plt.xlabel('$a_2$');           # Label the x axis
-plt.ylabel('$\chi^2$'); # Label the y axis
+plt.xlabel('$a_2$')                         # Label the x axis
+plt.ylabel('$\chi^2$')                      # Label the y axis
 plt.grid(True)                              # Show grid lines
 plt.show()
 
@@ -144,7 +144,7 @@ X2maxdisp = X2mindisp + 100
 c3 = ax3.pcolormesh(a1,a2,X2, cmap='bone',shading='gouraud',\
                     vmin=X2mindisp,vmax=X2maxdisp)  # plot the field plane irradiance
 c3b=plt.contour(a1,a2,X2,levels=[np.min(X2)+1],\
-    colors=['#FFFFFF'],linestyles='dashed');        # plot one contour at min(X2) + 1
+    colors=['#FFFFFF'],linestyles='dashed')         # plot one contour at min(X2) + 1
 plt.plot(a[0],a[1],'w.')                            # plot a point at the best fit solution
 ax3.set_aspect('equal', 'box')                      # set aspect ratio to be correct
 ax3.set_title('Field Plane Irradiance')             # add a title
