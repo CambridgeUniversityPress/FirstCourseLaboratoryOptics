@@ -12,17 +12,6 @@
 % Make the simulated data
 %-----------------------------------------------------------------
 
-x = linspace(-5,5,9).';                     % x is the change in the length of one arm
-x = x + 0.2*randn(size(x));                 % Make the vector unevenly spaced
-
-a1_actual = 1/2*(1+(4*pi/633)*2);           % Offset (2 nm phase offset)
-a2_actual = 2*pi/633;                       % Slope (nm^-1). Michelson made with a HeNe
-y = a1_actual + a2_actual*x;                % The physical relationship betw. x & y
-
-sigma_y = 0.025;                            % The std of y values (the actual uncertainty)
-y = y + sigma_y*randn(size(y));             % Add the fluctuations due to the uncertainty
-yerr =  abs(y)*0.02;                        % 2% uncertainty estimate made by the observer
-
 d=[
    -5.0419    0.4463    0.0089
    -3.6250    0.4798    0.0096

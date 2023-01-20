@@ -23,20 +23,6 @@ sigma_y = 0.025;                            % The std of y values (the actual un
 y = y + sigma_y*randn(size(y));             % Add the fluctuations due to the uncertainty
 yerr =  abs(y)*0.02;                        % 2% uncertainty estimate made by the observer
 
-d=[
-   -5.0419    0.4463    0.0089
-   -3.6250    0.4798    0.0096
-   -2.4634    0.4917    0.0098
-   -1.4560    0.4921    0.0098
-    0.1898    0.5638    0.0113
-    1.3114    0.5110    0.0102
-    2.5270    0.5328    0.0107
-    3.8530    0.5403    0.0108
-    5.0523    0.5406    0.0108
-    ];
-x = d(:,1);
-y = d(:,2);
-yerr = d(:,3);
 
 %-----------------------------------------------------------------
 % Display the data
