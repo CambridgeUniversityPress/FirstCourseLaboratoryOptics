@@ -53,7 +53,7 @@ plt.errorbar(x,y,yerr,fmt='none',\
              ecolor=[0.2,0.4,0.8],capsize=3)  # Plot the data with the unc. estimates
 plt.plot(x,y,'o',mfc='none',color=[0.2,0.4,0.8])
 plt.xlabel('Mirror motion (nm)')            # Label the x axis
-plt.ylabel('$P_\mathrm{out} / P_\mathrm{one~arm}$'); # Label the y axis
+plt.ylabel('$P_\mathrm{out} / P_\mathrm{one~arm}$') # Label the y axis
 plt.xlim([-10,10])                          # Choose the x axis limits of the plot
 plt.ylim([0.4,0.65])                        # Choose the y axis limits of the plot]
 plt.grid(True)                              # Show grid lines
